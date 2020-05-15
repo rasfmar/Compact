@@ -1,0 +1,3 @@
+carve "What is your name? "
+absorb x
+carve "Hello, " + x + "!"

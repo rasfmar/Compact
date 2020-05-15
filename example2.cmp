@@ -1,0 +1,7 @@
+x = 7
+b = x + 3
+c = "abc" + "adc"
+d = c + c + c
+b = b + b + b;
+x = b - 9;
+dump
