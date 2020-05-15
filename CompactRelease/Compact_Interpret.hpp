@@ -224,6 +224,8 @@ _1:
         break;
     }
     // at this point its just operators and eof
+    case cmp_teof:
+        break;
     default: {
         C->error("Invalid expression");
         break;
