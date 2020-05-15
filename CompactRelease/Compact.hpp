@@ -3,9 +3,9 @@
 #ifndef COMPACT
 #define COMPACT
 
-#define COMPACT_VERSION "Compact v0.13_2"
+#define COMPACT_VERSION "Compact v0.14_0"
 
 #include "Compact_State.hpp"
-#include "Compact_Interpret.hpp"
+#include "Compact_Util.hpp"
 
 #endif

@@ -1,105 +1,12 @@
-#ifndef COMPACT_INTERPRET
-#define COMPACT_INTERPRET
+#ifndef COMPACT_PARSER
+#define COMPACT_PARSER
 
 #include <string>
 #include <iostream>
 #include "Compact_State.hpp"
 #include "Compact_Token.hpp"
 #include "Compact_Object.hpp"
-
-std::vector<cmp_token*>* cmp_interpret(cmp_state* C, std::string& strng) {
-    const char* str = strng.c_str();
-    cmp_ttype t = cmp_tnull;
-    std::string* z = new std::string("");
-    std::vector<cmp_token*>* ret = new std::vector<cmp_token*>();
-
-    for(unsigned int i = 0; i < strlen(str) + 1; ) {
-        switch(t) {
-        case cmp_tnull: {
-            if(isdigit(str[i])) {
-                t = cmp_tint; // there is nothing else it could be
-                *z += str[i];
-            } else if(isalpha(str[i])) {
-                t = cmp_tidentifier; // there is nothing else it could be, again
-                *z += str[i];
-            } else {
-                switch(str[i]) {
-                case '"': { // a new string
-                    t = cmp_tstring;
-                    *z += str[i];
-                    break;
-                }
-                case '+': {
-                    ret->push_back(new cmp_token(cmp_top_plus));
-                    break;
-                }
-                case '-': {
-                    ret->push_back(new cmp_token(cmp_top_minus));
-                    break;
-                }
-                case '=': {
-                    ret->push_back(new cmp_token(cmp_top_equals));
-                    break;
-                }
-                default: {
-                    break;
-                }
-                }
-            }
-            break;
-        }
-        case cmp_tint: {
-            if(isdigit(str[i])) {
-                *z += str[i];
-            } else {
-                // we obviously broke the integer, we're done
-                int* v = new int(std::stoi(*z));
-                ret->push_back(new cmp_token(new cmp_object(v)));
-                *z = "";
-                t = cmp_tnull;
-                i--;
-            }
-            break;
-        }
-        case cmp_tstring: {
-            if(str[i] != '"' && str[i] != '\0') {
-                *z += str[i];
-            } else {
-                // we reached another quote, we're done
-                std::string* v = new std::string(*z);
-                v->erase(0,1);
-                ret->push_back(new cmp_token(new cmp_object(v)));
-                *z = "";
-                t = cmp_tnull;
-            }
-            break;
-        }
-        case cmp_tidentifier: {
-            if(isalnum(str[i])) {
-                *z += str[i];
-            } else {
-                // it definitely can't be an identifier at this point
-                std::string* v = new std::string(*z);
-                ret->push_back(new cmp_token(t,new cmp_object(v)));
-                *z = "";
-                t = cmp_tnull;
-                i--;
-            }
-            break;
-        }
-        default: break;
-        }
-        if(str[i] == '\0') {
-            // check if we weren't done earlier in the code, that means malformed expression
-            ret->push_back(new cmp_token(cmp_teof));
-            break;
-        }
-        i++;
-    }
-
-    delete z;
-    return ret;
-}
+#include "Compact_Lexer.hpp"
 
 void cmp_dump(cmp_state* C) {
     for(const auto& d : *(C->def)) {
@@ -107,7 +14,7 @@ void cmp_dump(cmp_state* C) {
     }
 }
 
-cmp_object* cmp_express(cmp_state* C, std::vector<cmp_token*>* tokens) {
+cmp_object* cmpP_expression(cmp_state* C, std::vector<cmp_token*>* tokens) {
     unsigned int i = 0;
     switch(tokens->at(i)->type) {
     case cmp_tnull: break; // not possible
@@ -132,7 +39,7 @@ _0:
                 tokens->erase(tokens->begin(),tokens->begin()+2);
                 tokens->at(0) = new cmp_token(new cmp_object(val));
 
-                return cmp_express(C,tokens);
+                return cmpP_expression(C,tokens);
             }
             case cmp_tidentifier: {
                 std::string id = *(std::string*)(tokens->at(i+2)->obj->val);
@@ -174,7 +81,7 @@ _1:
                 tokens->erase(tokens->begin(),tokens->begin()+2);
                 tokens->at(0) = new cmp_token(new cmp_object(val));
 
-                return cmp_express(C,tokens);
+                return cmpP_expression(C,tokens);
             }
             case cmp_tidentifier: {
                 std::string id = *(std::string *)(tokens->at(i + 2)->obj->val);
@@ -209,12 +116,12 @@ _1:
                 // then let's replace this token's value and recall this entire function
                 delete tokens->at(i);
                 tokens->at(i) = new cmp_token(new cmp_object(new int(*(int*)(C->getdef(id)->val))));
-                return cmp_express(C,tokens);
+                return cmpP_expression(C,tokens);
             }
             case cmp_ostring: {
                 delete tokens->at(i);
                 tokens->at(i) = new cmp_token(new cmp_object(new std::string(*(std::string*)(C->getdef(id)->val))));
-                return cmp_express(C,tokens);
+                return cmpP_expression(C,tokens);
             }
             default: // this can't happen, it can't be anything else
                 break;
@@ -234,8 +141,8 @@ _1:
     return new cmp_object();
 }
 
-void cmp_do(cmp_state* C, std::string& str) {
-    std::vector<cmp_token*>* tokens = cmp_interpret(C,str);
+void cmpP_statement(cmp_state* C, std::string& str) {
+    std::vector<cmp_token*>* tokens = cmpL_lexer(C,str);
     unsigned int i = 0;
     switch(tokens->at(i)->type) {
     case cmp_tnull: break; // this isn't possible
@@ -248,7 +155,7 @@ void cmp_do(cmp_state* C, std::string& str) {
         } else if(name == "carve") {
             delete tokens->at(i);
             tokens->erase(tokens->begin(),tokens->begin()+1);
-            std::cout << cmp_express(C,tokens)->valStr() << '\n';
+            std::cout << cmpP_expression(C,tokens)->valStr() << '\n';
         } else if(name == "absorb") {
             switch(tokens->at(i+1)->type) {
             case cmp_tidentifier: {
@@ -276,7 +183,7 @@ void cmp_do(cmp_state* C, std::string& str) {
                     delete tokens->at(i);
                 tokens->erase(tokens->begin(),tokens->begin()+2);
 
-                cmp_object* inition = cmp_express(C,tokens);
+                cmp_object* inition = cmpP_expression(C,tokens);
                 if(C->ok) {
                     C->define(name,inition);
                 }
