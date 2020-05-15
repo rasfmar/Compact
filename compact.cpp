@@ -5,7 +5,7 @@ int main(int argc, char* argv[]) {
     cmp_state* C = new cmp_state();
 
     if(argc < 2) {
-        std::cerr << "Starting Compact console! Enter empty line to exit\n";
+        std::cerr << "Starting " << COMPACT_VERSION << " console! Enter empty line to exit\n";
 
         std::string line;
         do {
