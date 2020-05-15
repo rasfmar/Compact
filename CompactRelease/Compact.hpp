@@ -3,7 +3,7 @@
 #ifndef COMPACT
 #define COMPACT
 
-#define COMPACT_VERSION() { return "Compact v0.13_1"}
+#define COMPACT_VERSION "Compact v0.13_2"
 
 #include "Compact_State.hpp"
 #include "Compact_Interpret.hpp"
