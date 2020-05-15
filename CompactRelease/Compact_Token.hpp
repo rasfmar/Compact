@@ -10,6 +10,8 @@ enum cmp_ttype {
     cmp_tidentifier,
     cmp_top_plus,
     cmp_top_minus,
+    cmp_top_multiply,
+    cmp_top_divide,
     cmp_top_equals,
     cmp_teof
 };
@@ -23,6 +25,8 @@ std::string cmp_ttypeString(cmp_ttype t) {
     case cmp_top_plus: return "cmp_top_plus";
     case cmp_top_minus: return "cmp_top_minus";
     case cmp_top_equals: return "cmp_top_equals";
+    case cmp_top_multiply: return "cmp_top_multiply";
+    case cmp_top_divide: return "cmp_top_divide";
     case cmp_teof: return "cmp_teof";
     }
     return "";
@@ -35,6 +39,7 @@ struct cmp_token {
     cmp_token(cmp_ttype t, cmp_object* o);
     cmp_token(cmp_ttype t);
     cmp_token(cmp_object* o);
+    cmp_token();
     ~cmp_token();
 };
 
@@ -55,6 +60,9 @@ cmp_token::cmp_token(cmp_ttype t)
 
 cmp_token::cmp_token(cmp_object* o)
 : cmp_token((cmp_ttype)(o->type),o) {}
+
+cmp_token::cmp_token()
+: cmp_token(cmp_tnull) {};
 
 cmp_token::~cmp_token() {
     delete this->obj;

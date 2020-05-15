@@ -36,6 +36,14 @@ std::vector<cmp_token*>* cmpL_lexer(cmp_state* C, std::string& strng) {
                     ret->push_back(new cmp_token(cmp_top_minus));
                     break;
                 }
+                case '*': {
+                    ret->push_back(new cmp_token(cmp_top_multiply));
+                    break;
+                }
+                case '/': {
+                    ret->push_back(new cmp_token(cmp_top_divide));
+                    break;
+                }
                 case '=': {
                     ret->push_back(new cmp_token(cmp_top_equals));
                     break;

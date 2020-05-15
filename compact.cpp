@@ -6,12 +6,16 @@ int main(int argc, char* argv[]) {
 
     if(argc < 2) {
         std::cerr << "Starting " << COMPACT_VERSION << " console! Enter empty line to exit\n";
-
         std::string line;
         do {
             std::cout << "- ";
             std::getline(std::cin, line);
-            cmp_do(C, line);
+            /*
+            for(const auto& token : *(cmpL_lexer(C,line))) {
+                std::cout << token->str() << '\n';
+            }
+            */
+           cmp_do(C,line);
         } while(line != "" && C->ok);
 
         if(!(C->ok)) {
