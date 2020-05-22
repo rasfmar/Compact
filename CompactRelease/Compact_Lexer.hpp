@@ -48,6 +48,18 @@ std::vector<cmp_token*>* cmpL_lexer(cmp_state* C, std::string& strng) {
                     ret->push_back(new cmp_token(cmp_top_equals));
                     break;
                 }
+                case '^': {
+                    ret->push_back(new cmp_token(cmp_top_power));
+                    break;
+                }
+                case '(': {
+                    ret->push_back(new cmp_token(cmp_top_lparen));
+                    break;
+                }
+                case ')': {
+                    ret->push_back(new cmp_token(cmp_top_rparen));
+                    break;
+                }
                 default: {
                     break;
                 }

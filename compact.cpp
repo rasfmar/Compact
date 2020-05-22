@@ -5,21 +5,22 @@ int main(int argc, char* argv[]) {
     cmp_state* C = new cmp_state();
 
     if(argc < 2) {
-        std::cerr << "Starting " << COMPACT_VERSION << " console! Enter empty line to exit\n";
+        std::cout << "Starting " << COMPACT_VERSION << " console! Enter empty line to exit\n";
         std::string line;
         do {
-            std::cout << "- ";
+            std::cout << "\033[1m\033[37m$ ";
             std::getline(std::cin, line);
             /*
             for(const auto& token : *(cmpL_lexer(C,line))) {
                 std::cout << token->str() << '\n';
             }
             */
-           cmp_do(C,line);
+            std::cout << "\033[0m\033[36m";
+            cmp_do(C, line);
         } while(line != "" && C->ok);
 
         if(!(C->ok)) {
-            std::cout << C->out->str();
+            std::cerr << "\033[31m" << C->out->str() << "\033[0m";
             delete C;
             return 1;
         }
@@ -33,7 +34,7 @@ int main(int argc, char* argv[]) {
                 cmp_do(C,line);
 
         if(!(C->ok)) {
-            std::cout << C->out->str();
+            std::cerr << "\033[31m" << C->out->str() << "\033[0m";
             delete C;
             return 1;
         }

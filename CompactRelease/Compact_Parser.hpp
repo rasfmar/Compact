@@ -14,15 +14,39 @@ void cmpP_dump(cmp_state* C) {
     }
 }
 
+cmp_token* cmpP_operate(cmp_token* t0, cmp_token* op, cmp_token* t1) {
+    return new cmp_token();
+}
+
 cmp_object* cmpP_expression(cmp_state* C, std::vector<cmp_token*>* tokens) {
     unsigned int i = 0;
+
+    // power
+    /*
+    for (; i < tokens->size(); ) {
+        switch(tokens->at(i)->type) {
+        case cmp_top_power: {
+            if(i > 0) {
+
+            } else {
+
+            }
+        }
+        default:
+            break;
+        }
+        i++;
+    }
+    */
+
+    i = 0;
     // multiplication and division
     for (; i < tokens->size();) {
         switch(tokens->at(i)->type) {
         case cmp_top_multiply: case cmp_top_divide: {
             // we want to get the subexpressions immediately before and after.
             // on the right, we can include a minus sign
-            // also, i can't be 0. if it is, throw exception
+            // also, it can't be 0. if it is, throw exception
             if(i > 0) {
 _3:
                 // let's look at the argument to the left of the op
@@ -472,9 +496,8 @@ void cmpP_statement(cmp_state* C, std::string& str) {
                 tokens->erase(tokens->begin(),tokens->begin()+2);
 
                 cmp_object* inition = cmpP_expression(C,tokens);
-                if(C->ok) {
+                if(C->ok)
                     C->define(name,inition);
-                }
                 goto finish;
             }
             default: {

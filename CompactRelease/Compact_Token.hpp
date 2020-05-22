@@ -13,6 +13,9 @@ enum cmp_ttype {
     cmp_top_multiply,
     cmp_top_divide,
     cmp_top_equals,
+    cmp_top_lparen,
+    cmp_top_rparen,
+    cmp_top_power,
     cmp_teof
 };
 
@@ -24,9 +27,12 @@ std::string cmp_ttypeString(cmp_ttype t) {
     case cmp_tidentifier: return "cmp_tidentifier";
     case cmp_top_plus: return "cmp_top_plus";
     case cmp_top_minus: return "cmp_top_minus";
-    case cmp_top_equals: return "cmp_top_equals";
     case cmp_top_multiply: return "cmp_top_multiply";
     case cmp_top_divide: return "cmp_top_divide";
+    case cmp_top_equals: return "cmp_top_equals";
+    case cmp_top_lparen: return "cmp_top_lparen";
+    case cmp_top_rparen: return "cmp_top_rparen";
+    case cmp_top_power: return "cmp_top_power";
     case cmp_teof: return "cmp_teof";
     }
     return "";
