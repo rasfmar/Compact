@@ -1,5 +1,5 @@
 # What is this?
-Compact is an abandoned personal language I made to test my skills in C++ and my ability to create a lexical analyzer and parser.
+Compact is a personal programming language I made to test my skills in C++ and my ability to create a lexical analyzer and parser.
 
 # How does this work?
 Compact uses a lexer/tokenizer to go through each character of a string and generates a vector to a bunch of tokens that represent the string. My parser then interprets the vector of tokens. Variables are stored using a std::map located within a compact_state* object which must be instantiated by the user. Also, basically everything is allocated on the heap because I thought that would make it faster. It probably didn't help. 
