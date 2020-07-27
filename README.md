@@ -11,7 +11,7 @@ The parser has separate functions for statements and expressions. It assumes the
 Compact at least has an acceptable implementation for operator precedence. Adding operators to Compact is fairly easy.
 
 # How do I use it?
-Please don't use Compact. This language is really weird, and I plan on restarting it. Regardless, here's a breakdown of what you can do (trust me, it's not much)
+Here's a breakdown of what you can do.
 ```javascript
 carve "What is your name? "
 absorb x
