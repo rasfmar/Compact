@@ -1,7 +1,11 @@
-# What is this?
+# Compact
+### Update (10/13/20)
+I recognize that this is no longer code that is representative of my current knowledge of C++. It is several months old at this point, and since then I have done lots and lots of learning and practicing.
+
+### What is this?
 Compact is a personal programming language I made to test my skills in C++ and my ability to create a lexical analyzer and parser.
 
-# How does this work?
+### How does this work?
 Compact uses a lexer/tokenizer to go through each character of a string and generates a vector to a bunch of tokens that represent the string. My parser then interprets the vector of tokens. Variables are stored using a std::map located within a compact_state* object which must be instantiated by the user. Also, basically everything is allocated on the heap because I thought that would make it faster. It probably didn't help. 
 
 The definition for tokens is a disaster. Each compact_token contains a token type and a compact_object* which when dereferenced contains a void* and an object type. Object and token types are pretty much identical; in fact, I'm pretty sure the definition for the token type enumerator just extends the object type enumerator which I had already made. Tokens and objects are (almost) the exact same thing.
@@ -10,7 +14,7 @@ The parser has separate functions for statements and expressions. It assumes the
 
 Compact at least has an acceptable implementation for operator precedence. Adding operators to Compact is fairly easy.
 
-# How do I use it?
+### How do I use it?
 Here's a breakdown of what you can do.
 ```javascript
 carve "What is your name? "
@@ -26,5 +30,5 @@ x = b - 9;
 dump
 ```
 
-# Why did you create this abomination of a project?
+### Why did you create this abomination of a project?
 I was looking at the source code for Lua and I thought that I could do something similar. I also wanted to work on my C++ because it had been years since I had used it.
