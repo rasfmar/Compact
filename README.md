@@ -1,4 +1,4 @@
-# Compact
+## Compact
 ### Update (10/13/20)
 I recognize that this is no longer code that is representative of my current knowledge of C++. It is several months old at this point, and since then I have done lots and lots of learning and practicing.
 
